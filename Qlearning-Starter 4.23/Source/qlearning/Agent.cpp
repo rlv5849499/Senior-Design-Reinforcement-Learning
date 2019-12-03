@@ -42,7 +42,7 @@ void AAgent::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	i++;
-	if (i == 8) {	//Making Q learning process happen every 8 ticks just so it is easier to see the movement
+	if (i == 50) {	//Making Q learning process happen every 8 ticks just so it is easier to see the movement
 		int use;
 		float r;
 
@@ -64,7 +64,7 @@ void AAgent::Tick(float DeltaTime)
 int32 AAgent::SelectAction()
 {//"select action a based on policy π "
 	
-	
+    Debug(FString::Printf(TEXT("Selecting Action")));
 	int s = State;	//current state
 
 	if (QTable[s].Action[0] > QTable[s].Action[1])// if Q(s, a) for action 0 is greate than Q(s, a) for action 1
@@ -85,6 +85,8 @@ int32 AAgent::SelectAction()
 // and outside of the control of the learning algorithm
 void AAgent::PerformSelectedAction(int32 Action)
 {//"perform action a"
+
+	Debug(FString::Printf(TEXT("Performing Action")));
 	if (Action == 0)
 	{
 		if (State == 0)
@@ -137,6 +139,7 @@ void AAgent::PerformSelectedAction(int32 Action)
 // a variable that tracks the previous Y-coordinate is available: previousY
 float AAgent::obtainReward()
 {//"receive reward r"
+	Debug(FString::Printf(TEXT("Obtaining Rewards")));
 	float reward = 0;
 
 	FVector loc = MeshComp->GetRelativeTransform().GetLocation();//Gets current location
@@ -157,7 +160,7 @@ float AAgent::obtainReward()
 // Update Q value of the current State and action
 void AAgent::UpdateQ(float reward, int32 action)
 {//"update state-action value: Q(s,a) = r"
-
+	Debug(FString::Printf(TEXT("Upadating Q values")));
 	int s = State;
 	int a = action;
 	QTable[s].Action[a] = reward;
@@ -168,5 +171,6 @@ void AAgent::UpdateQ(float reward, int32 action)
 //  Set State to be the next state, State_p
 void AAgent::UpdateState()
 {	//"update state-action value: s = s' "
+	Debug(FString::Printf(TEXT("Updating states")));
 	State = State_p;
 }
